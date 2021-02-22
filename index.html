@@ -1,1242 +1,909 @@
 <!DOCTYPE html>
 <html>
+
 <head>
+
 	<title>Story for blog</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 </head>
+
 <body>
-<div id = "myDiv"></div>
 
- 
-
-</div>
+    <div id = "myDiv"></div>
 
 </body>
 
 <script type="text/javascript">
-//need to rfactor sure this
-window.onload = function() {
-    document.getElementById("aStory").style.display="none";
-document.getElementById("alls").style.display="none";
-document.getElementById("alls2").style.display="none";
 
-};
+    window.onload = function() {
+        document.getElementById("aStory").style.display="none";
+        document.getElementById("alls").style.display="none";
+        document.getElementById("alls2").style.display="none";
+    };
 
-
-
-
-//photo and text for story 1
-var firstStoryPhoto = 'https://www.youtube.com/embed/mg7netw1JuM';
-
-var firststoryPhotoPlay = firstStoryPhoto + "?autoplay=1";
+    //video and text for story 1
+    var firstStoryPhoto = 'https://www.youtube.com/embed/mg7netw1JuM';
+    //video when you wanna play it in the story
+    var firststoryPhotoPlay = firstStoryPhoto + "?autoplay=1";
+    var firstText = "1 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.";
 
 
+    //photo and text for story 2
+    var secondStoryPhoto = 'https://cdn.pixabay.com/photo/2021/01/22/22/34/man-5941332_960_720.jpg';
+    var secondText = "2 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.";
+
+    //photo and text for story 3
+    var thirdStoryPhoto = 'https://cdn.pixabay.com/photo/2020/11/01/21/45/architecture-5705042_960_720.jpg';
+    var thirdText = "3 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.";
+
+    //set seconds for the first story
+    var time1 = 10;
+    //set seconds for the second story
+    var time2 = 3;
+    //set seconds for the third story
+    var time3 = 3;
 
 
-var firstText = "1 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.";
+    //create the story bar
+    var bar = document.createElement("div");
+    bar.id = "all";
+    bar.style.width = "100%";
+    bar.style.height = "70px";
+    bar.style.background = "black";
+    bar.style.paddingTop = "10px";
+    bar.style.paddingBottom = "10px";
+    bar.style.display = "flex";
+    bar.style.justifyContent = "space-between";
+    bar.style.zIndex = "0";
 
-//photo and text for story 1
-var secondStoryPhoto = 'https://cdn.pixabay.com/photo/2021/01/22/22/34/man-5941332_960_720.jpg';
-var secondText = "2 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.";
+    document.getElementById("myDiv").appendChild(bar);
 
-//photo and text for story 1
-var thirdStoryPhoto = 'https://cdn.pixabay.com/photo/2020/11/01/21/45/architecture-5705042_960_720.jpg';
-var thirdText = "3 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.";
+    //create boolean variable to know which animation to trigger or cancel for the red timeline of each story
+    var whichAnim = true;
 
-//set seconds for first story
-var time1 = 10;
+    //create line of timelinestory
+    var theLine = '<svg id= "theLine" height="210" width="100vw"><line x1="0" y1="1" x2="100%" y2="1" style="stroke:rgb(255,0,0);stroke-width:6;" /></svg>';
+    var theFknLine = document.createElement("div");
+    theFknLine.id = "alls";
+    theFknLine.innerHTML = theLine;
+    theFknLine.style.position = "absolute";
+    theFknLine.style.marginLeft = "-8px";
 
-//set seconds for seconds story
-var time2 = 3;
-
-//set seconds for third story
-var time3 = 3;
-
-
-
-//create a timeout variable to be able to stop any timeout when you want
-var myTimeout;
-
-
-
-
-//create the story bar
-var bar = document.createElement("div");
-bar.id = "all";
-bar.style.width = "100%";
-bar.style.height = "70px";
-bar.style.background = "black";
-bar.style.paddingTop = "10px";
-bar.style.paddingBottom = "10px";
-bar.style.display = "flex";
-bar.style.justifyContent = "space-between";
-bar.style.zIndex = "0";
-
-document.getElementById("myDiv").appendChild(bar);
-
-
-//create boolean variable to know which animation to trigger or cancel
-var whichAnim = true;
-
-
-//create line of timelinestory
-var theLine = '<svg id= "theLine" height="210" width="100vw"><line x1="0" y1="1" x2="100%" y2="1" style="stroke:rgb(255,0,0);stroke-width:6;" /></svg>';
-
-
-//create the story bar
-var theFknLine = document.createElement("div");
-theFknLine.id = "alls";
-theFknLine.innerHTML = theLine;
-theFknLine.style.position = "absolute";
-theFknLine.style.marginLeft = "-8px";
-
-document.getElementById("myDiv").appendChild(theFknLine);
-
-//create the second line of timelinestory for canceling animation for the first timeline
-
-
-//create line of timelinestory
-var theLine2 = '<svg id= "theLine2" height="210" width="100vw"><line x1="0" y1="1" x2="100%" y2="1" style="stroke:rgb(255,0,0);stroke-width:6;" /></svg>';
-
-
-//create the story bar
-var theFknLine2 = document.createElement("div");
-theFknLine2.id = "alls2";
-theFknLine2.innerHTML = theLine;
-theFknLine2.style.position = "absolute";
-theFknLine2.style.marginLeft = "-8px";
-
-document.getElementById("myDiv").appendChild(theFknLine2);
+    document.getElementById("myDiv").appendChild(theFknLine);
 
 
 
+    //create the seconds line of timelinestory
+    var theLine2 = '<svg id= "theLine2" height="210" width="100vw"><line x1="0" y1="1" x2="100%" y2="1" style="stroke:rgb(255,0,0);stroke-width:6;" /></svg>';
+    var theFknLine2 = document.createElement("div");
+    theFknLine2.id = "alls2";
+    theFknLine2.innerHTML = theLine;
+    theFknLine2.style.position = "absolute";
+    theFknLine2.style.marginLeft = "-8px";
+
+    document.getElementById("myDiv").appendChild(theFknLine2);
 
 
-
-//create story base background
-var story = document.createElement("div");
-story.id = "aStory";
-story.style.width = "80%";
-story.style.height = "80%";
-story.style.background = "linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(182,182,195,0.8814016172506739) 35%, rgba(255,255,255,1) 100%)";
-story.style.position = "absolute";
-story.style.left = "10%";
-story.style.right = "10%";
-story.style.top = "121px";
-
-document.getElementById("myDiv").appendChild(story);
+    //create a timeout variable to be able to stop any timeout when you want
+    var myTimeout;
 
 
+    //create story base background
+    var story = document.createElement("div");
+    story.id = "aStory";
+    story.style.width = "80%";
+    story.style.height = "80%";
+    story.style.background = "linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(182,182,195,0.8814016172506739) 35%, rgba(255,255,255,1) 100%)";
+    story.style.position = "absolute";
+    story.style.left = "10%";
+    story.style.right = "10%";
+    story.style.top = "121px";
 
-var inStory1 = false;
-var inStory2 = false;
-var inStory3 = false;
+    document.getElementById("myDiv").appendChild(story);
 
-
-
-//imagen 1
-var elem = document.createElement("img");
-elem.src = 'https://cdn.pixabay.com/photo/2021/01/22/16/55/camera-5940588_960_720.jpg';
-//elem.style.position = "absolute";
-elem.style.width = '50px';
-elem.style.height = '50px';
-elem.style.borderRadius = "50%";
-
-
-elem.style.borderWidth = "2px";
-elem.style.justifyContent = "center";
-elem.style.marginLeft = "40px";
-elem.style.zIndex = "4";
-elem.style.borderStyle ="solid";
-elem.style.borderColor = "white"
+    //variables to know in which story you are
+    var inStory1 = false;
+    var inStory2 = false;
+    var inStory3 = false;
 
 
-elem.id = "leftElement";
-//elem.style.marginLeft ="13%";
-elem.style.paddingTop = '5px';
+    //image to trigger first story
+    var elem = document.createElement("img");
+    elem.src = 'https://cdn.pixabay.com/photo/2021/01/22/16/55/camera-5940588_960_720.jpg';
+    elem.style.width = '50px';
+    elem.style.height = '50px';
+    elem.style.borderRadius = "50%";
+    elem.style.borderWidth = "2px";
+    elem.style.justifyContent = "center";
+    elem.style.marginLeft = "40px";
+    elem.style.zIndex = "4";
+    elem.style.borderStyle ="solid";
+    elem.style.borderColor = "white"
+    elem.id = "leftElement";
+    elem.style.paddingTop = '5px';
+
+    document.getElementById("all").appendChild(elem);
+
+    //sping of image for the first story
+    var xSpin = 360;
+
+    //when the image of the first story is triggered
+    elem.onclick = function(e) { 
+
+        //clear timeout of displaying story background of any possible story 2 or 3
+    	clearTimeout(myTimeout);
+        
+        //function of story 1 - display the video and the text of
+    	clickS1();
+     
+     }
 
 
-var xSpin = 360;
-var timesS = 1;
+    //image to trigger the second story
+    var elem2 = document.createElement("img");
+    elem2.src = secondStoryPhoto;
+    elem2.style.width = '50px';
+    elem2.style.height = '50px';
+    elem2.style.paddingTop = '5px';
+    elem2.style.borderRadius = "50%";
+    elem2.style.borderWidth = "2px";
+    elem2.style.borderStyle ="solid";
+    elem2.style.borderColor = "white"
+    elem2.style.zIndex = "4";
+    elem2.style.justifyContent = "center";
+    elem2.id = "centeredElement";
+
+    document.getElementById("all").appendChild(elem2);
+
+    //when the image of the second story is triggered
+    elem2.onclick = function(e) {
+
+        //clear timeout of displaying story background of any possible story 1 or 3
+    	clearTimeout(myTimeout);
+
+        //function of story 2 - display the image and the text of
+        clickS2();
+
+     }
 
 
+    //image to trigger the third story
+    var elem3 = document.createElement("img");
+    elem3.src = thirdStoryPhoto;
+    elem3.style.width = '50px';
+    elem3.style.height = '50px';
+    elem3.style.borderRadius = "50%";
+    elem3.style.borderWidth = "2px";
+    elem3.style.borderStyle ="solid";
+    elem3.style.borderColor = "white"
+    elem3.style.justifyContent = "center";
+    elem3.style.marginRight = "40px";
+    elem3.style.zIndex = "4";
+    elem3.id = "rightElement";
+    elem3.style.paddingTop = '5px';
 
+    document.getElementById("all").appendChild(elem3);
 
+    //when the image of the third story is triggered
+    elem3.onclick = function(e) { 
 
-elem.onclick = function(e) { 
-	clearTimeout(myTimeout);
+        //clear timeout of displaying story background of any possible story 1 or 2
+        clearTimeout(myTimeout);
+
+        //function of story 3 - display the image and the text of
+        clickS3();
+
+     }
+
     
-	clickS1();
+    //create x button to close a story
+    var theXbutton = document.createElement("a");
+    theXbutton.id = "closeStory";
+    theXbutton.style.color = "white";
+    theXbutton.innerHTML = "X"; 
+    theXbutton.style.position="absolute";
+    theXbutton.style.right="0";
+    theXbutton.style.padding="5px";
 
-     $("#pho1")[0].src += "&autoplay=1";
- 
+    document.getElementById("aStory").appendChild(theXbutton);
+
+    //function when the x button is pressed to close a story
+    theXbutton.onclick = function() {
+
+        //hide stories background
+        document.getElementById("aStory").style.display="none";
+
+        //clear timeout of displaying story background of any possible story 1, 2 or 3
+        clearTimeout(myTimeout);
+
+        //thats a way to stop video playing on story 1 (when you wanna play you put at the end ?autoplay; I created a new variable for that and named firstStoryPhotoPlay)
+        pho1.src = firstStoryPhoto;
+
+        //function when x button is hit
+    	closeAll();
+
+     }
+
+
+    //create base for video of the first story
+    var photo1p = document.createElement("div");
+    photo1p.id = "photo1place";
+    photo1p.style.color = "white";
+    photo1p.style.width = "400px";
+    photo1p.style.height = "270px";
+    photo1p.style.margin = "auto";
+
+    document.getElementById("aStory").appendChild(photo1p);
+
+    //assign video to the base of first story 
+    var pho1 = document.createElement("iframe");
+    pho1.id = "pho1";
+    pho1.style.color = "white";
+    pho1.style.width = "400px";
+    pho1.style.height = "270px";
+    pho1.style.margin = "auto";
+    pho1.style.position ="absolute";
+    pho1.src = firstStoryPhoto;
+    pho1.allow = "autoplay;fullscreen";
+
+    document.getElementById("photo1place").appendChild(pho1);
+
+
+    //create text for the first story
+    var t1 = document.createElement("div");
+    t1.id = "text1";
+    t1.style.color = "white";
+    t1.style.fontWeight = "bold";
+    t1.style.margin = "auto";
+    t1.innerHTML = firstText; 
+    t1.style.padding = "6px";
+    t1.style.maxWidth = "600px";
+
+    document.getElementById("aStory").appendChild(t1);
+
+    //create base for image of the second story
+    var photo2p = document.createElement("div");
+    photo2p.id = "photo2place";
+    photo2p.style.color = "white";
+    photo2p.style.width = "400px";
+    photo2p.style.height = "270px";
+    photo2p.style.margin = "auto";
+
+    document.getElementById("aStory").appendChild(photo2p);
+
+
+    //assign image to the base of second story 
+    var pho2 = document.createElement("img");
+    pho2.id = "pho2";
+    pho2.style.color = "white";
+    pho2.style.width = "400px";
+    pho2.style.height = "270px";
+    pho2.style.margin = "auto";
+    pho2.src = secondStoryPhoto;
+
+    document.getElementById("photo2place").appendChild(pho2);
+
+    //create text for the second story 
+    var t2 = document.createElement("div");
+    t2.id = "text2";
+    t2.style.color = "white";
+    t2.style.fontWeight = "bold";
+    t2.style.margin = "auto";
+    t2.innerHTML = secondText; 
+    t2.style.padding = "6px";
+    t2.style.maxWidth = "600px";
+
+
+    document.getElementById("aStory").appendChild(t2);
+
+
+    //create base for image of the third story
+    var photo3p = document.createElement("div");
+    photo3p.id = "photo3place";
+    photo3p.style.color = "white";
+    photo3p.style.width = "400px";
+    photo3p.style.height = "270px";
+    photo3p.style.margin = "auto";
+
+    document.getElementById("aStory").appendChild(photo3p);
+
+    //assign image to the base of third story 
+    var pho3 = document.createElement("img");
+    pho3.id = "pho3";
+    pho3.style.color = "white";
+    pho3.style.width = "400px";
+    pho3.style.height = "270px";
+    pho3.style.margin = "auto";
+    pho3.src = thirdStoryPhoto;
+
+    document.getElementById("photo3place").appendChild(pho3);
+
+    //create text for the third story 
+    var t3 = document.createElement("div");
+    t3.id = "text3";
+    t3.style.color = "white";
+    t3.style.fontWeight = "bold";
+    t3.style.margin = "auto";
+    t3.innerHTML = thirdText; 
+    t3.style.padding = "6px";
+    t3.style.maxWidth = "600px";
+
+    document.getElementById("aStory").appendChild(t3);
+
+
+    //function show a story
+    function showStory(){
+
+        document.getElementById('fastTypeArea').style.display = "";
+        document.getElementById('ex').style.display = "";
+        document.getElementById('closeStory').style.display = "";
+
+    }
+
+
+    //create the second story bar 
+    var pf = document.createElement("div");
+    pf.position = "absolute";
+    pf.id = "theAll";
+    pf.style.width = "100%";
+    pf.style.height = "90px";
+    pf.style.marginTop = "-110px";
+    pf.style.paddingTop = "10px";
+    pf.style.paddingBottom = "10px";
+    pf.style.zIndex = "-100";
+    pf.style.justifyContent = "space-between";
+
+    document.getElementById("myDiv").appendChild(pf);
+
+
+    //create the story bar
+    var barBorder = document.createElement("div");
+    barBorder.id = "allMF";
+    barBorder.style.width = "100%";
+    barBorder.style.height = "90px";
+    barBorder.style.background = "black";
+    barBorder.style.paddingBottom = "10px";
+    barBorder.style.display = "flex";
+    barBorder.style.justifyContent = "space-between";
+    barBorder.style.zIndex = "-1";
+
+    document.getElementById("theAll").appendChild(barBorder);
+
+
+
+    //border of the first story sphere link
+    var elemBorder1 = document.createElement("div");
+    elemBorder1.style.width = '57px';
+    elemBorder1.style.height = '55px';
+    elemBorder1.style.borderRadius = "50%";
+    elemBorder1.style.paddingTop = '5px';
+    elemBorder1.style.marginTop = '20px';
+    elemBorder1.style.justifyContent = "center";
+    elemBorder1.id = "leftElementBorder";
+    elemBorder1.style.zIndex = "0";
+    elemBorder1.style.marginLeft = "37px";
+
+    document.getElementById("allMF").appendChild(elemBorder1);
+
+
+    //border of the second story sphere link
+    var elem2Border = document.createElement("div");
+    elem2Border.style.width = '57px';
+    elem2Border.style.height = '55px';
+    elem2Border.style.borderRadius = "50%";
+    elem2Border.style.paddingTop = '5px';
+    elem2Border.style.justifyContent = "center";
+    elem2Border.id = "centeredElementBorder";
+    elem2Border.style.marginTop = '20px';
+
+    document.getElementById("allMF").appendChild(elem2Border);
+
+
+    //border of the third story sphere link
+    var elem3Border = document.createElement("div");
+    elem3Border.style.width = '57px';
+    elem3Border.style.height = '55px';
+    elem3Border.style.borderRadius = "50%";
+    elem3Border.style.paddingTop = '5px';
+    elem3Border.style.justifyContent = "center";
+    elem3Border.id = "rightElementBorder";
+    elem3Border.style.marginTop = '20px';
+    elem3Border.style.marginRight = "37px";
+
+    document.getElementById("allMF").appendChild(elem3Border);
+
+
+
+    //function click first story
+    function clickS1(){
+
+            document.getElementById("leftElement").style.border = "";
+            //play the video
+            pho1.src = firststoryPhotoPlay;
+
+            //put the right timeline to help with the animation canceling
+            if (whichAnim == true){
+            	document.getElementById("alls").style.display="";
+            	document.getElementById("alls2").style.display="none";
+            }
+
+            else{
+            	document.getElementById("alls2").style.display="";
+            	document.getElementById("alls").style.display="none";
+            }
+
+
+            //cancel the other stories
+            inStory2 = false;
+            inStory3 = false;
+
+            //display the video and the text underneath
+        	photo1place.style.display = "";
+        	t1.style.display = "";
+
+            //hide the other photos and text of the others stories
+        	t2.style.display = "none";
+        	t3.style.display = "none";
+        	photo2place.style.display = "none";
+        	photo3place.style.display = "none";
+        	document.getElementById("aStory").style.display="";
+
+
+            //animate (rotating) link to story 1
+            animateLinkToStory("leftElementBorder", "centeredElementBorder", "rightElementBorder", "spinItC", xSpin, "leftElement");
+
+            //animation for the timeline form left to right (red bar)
+            //in function of which timeline is invocated (there are 2 timelines: 1 visible and 1 invisible). This way is easy to animate an timeline line and cancel the another one when a story is playing and you press to see another story
+            if (whichAnim == true){
+
+                //animate line timeline for first story
+                animAline("theLineAnim", "-100%", "0", "alls");
+                whichAnim = false;
+
+                //cancel animation for rotating story 2 and 3
+                cancelLinksToStory("spinIt6", "0", "centeredElement");
+                cancelLinksToStory("spinIt7", "0", "rightElement");
+
+                //animation for first story border
+                insertStyleSheetRule("@keyframes border1Anim { 0% { transform: rotate(40deg);background: none;}  100% { transform: rotate(-360deg);  background: red;}  }");
+                insertStyleSheetRule("#leftElementBorder { " + "animation: border1Anim 2.4s;"  + "}", );
+
+                //animate the other borders to let next anim to be executed
+                insertStyleSheetRule("@keyframes border2Anim { 0% { transform: rotate(0deg);background: none;}  100% { transform: rotate(0deg);  background: none;}  }");
+                insertStyleSheetRule("#centeredElementBorder { " + "animation: border2sAnim .1s;"  + "}", );
+
+
+                insertStyleSheetRule("@keyframes border3Anim { 0% { transform: rotate(0deg);background: none;}  100% { transform: rotate(0deg);  background: none;}  }");
+                insertStyleSheetRule("#rightElementBorder { " + "animation: border3sAnim .1s;"  + "}", );
+
+
+            }
+
+            else{
+
+                //animate line 2 timeline for first story
+                animAline("theLineAnim2", "-100%", "0", "alls2");
+                whichAnim = true;
+
+                //cancel animation for rotating story 2 and 3
+                cancelLinksToStory("spinIt6", "0", "centeredElement");
+                cancelLinksToStory("spinIt7", "0", "rightElement");
+
+                //animation for first story border
+                insertStyleSheetRule("@keyframes border1Anim { 0% { transform: rotate(40deg);background: none;}  100% { transform: rotate(-360deg);  background: red;}  }");
+                insertStyleSheetRule("#leftElementBorder { " + "animation: border1Anim 2.4s;"  + "}", );
+
+                //animate the other borders to let next anim to be executed
+                insertStyleSheetRule("@keyframes border2Anim { 0% { transform: rotate(0deg);background: none;}  100% { transform: rotate(0deg);  background: none;}  }");
+                insertStyleSheetRule("#centeredElementBorder { " + "animation: border2sAnim .1s;"  + "}", );
+
+                insertStyleSheetRule("@keyframes border3Anim { 0% { transform: rotate(0deg);background: none;}  100% { transform: rotate(0deg);  background: none;}  }");
+                insertStyleSheetRule("#rightElementBorder { " + "animation: border3sAnim .1s;"  + "}", );
+
+            }
+
+
+            //animate scale full story from 0 to 105% when you click the round button
+            if (inStory1 == false){
+
+                $('#aStory').animate({transform: 1.05},
+                    {duration:340,easing:'linear',
+                    step: function(now, fx) {
+                        $('#aStory').css('transform','scale('+now+')')}
+                    })
+
+            }
+
+
+            inStory1 = true;
+
+            //start timer for first story
+            myTimeout = setTimeout(function(){clickS2();document.getElementById("aStory").style.display="";}, time1*1000);
+
+    }
+
+
+    //function click second story
+    function clickS2(){
+
+            document.getElementById("centeredElement").style.border = "";
+            //stop playing the video of story 1 if video was opened before
+            pho1.src = firstStoryPhoto;
+    
+            //cancel the other stories
+            inStory1 = false;
+            inStory3 = false;
+
+            //display the image and the text underneath
+            photo2place.style.display = "";
+            t2.style.display = "";
+
+            //hide the video from story 1 and image of story 3 and their texts
+            t1.style.display = "none";
+            t3.style.display = "none";
+            photo1place.style.display = "none";
+            photo3place.style.display = "none";
+
+            //display background of the story
+            document.getElementById("aStory").style.display="";
+  
+
+            //animation(rotating) for this border story
+            document.getElementById("centeredElementBorder").style.background = "red";
+            document.getElementById("leftElementBorder").style.background = "none";
+            document.getElementById("rightElementBorder").style.background = "none";
+            insertStyleSheetRule("@keyframes spinItC { 0% { transform: rotate(-40deg); }100% { transform: rotate("+ xSpin +"deg);}  }");
+            insertStyleSheetRule("#centeredElement { " + "animation: spinItC 1.4s;" + "width: 50px; height: 50px; border: 4px solid black; " + "}");
+
+            //animation for the bar line
+            if (whichAnim == true){
+
+                document.getElementById("alls").style.display = "";
+                document.getElementById("alls2").style.display = "none";
+
+                //animate line timeline for first story
+                insertStyleSheetRule("@keyframes theLineAnim { 0% { left:-100%; }  100% { left:0;} }");
+                insertStyleSheetRule("#alls { " + "animation: theLineAnim "+(time2-0.5)+"s;" + "}");
+                whichAnim = false;
+
+                //cancel animation for rotating story 1 and 3
+                cancelLinksToStory("spinItz3", "0", "rightElement");
+                cancelLinksToStory("spinIt3h", "0", "leftElement");
+
+                //animation for story2  border
+                insertStyleSheetRule("@keyframes border2Anim { 0% { transform: rotate(40deg);background: none;}  100% { transform:rotate(-360deg);background: red;}  }");
+                insertStyleSheetRule("#centeredElementBorder { " + "animation: border2Anim 2.4s;"  + "}", );
+
+
+                //animate the other borders to let next anim to be executed
+                insertStyleSheetRule("@keyframes border1Anim { 0% { transform: rotate(0deg);background: none;}  100% { transform: rotate(0deg);  background: none;}  }");
+                insertStyleSheetRule("#leftElementBorder { " + "animation: border1sAnim .1s;"  + "}", );
+
+                insertStyleSheetRule("@keyframes border3Anim { 0% { transform: rotate(0deg);background: none;}  100% { transform: rotate(0deg);  background: none;}  }");
+                insertStyleSheetRule("#rightElementBorder { " + "animation: border3sAnim .1s;"  + "}", );
+
+            }
+
+            else{
+
+                document.getElementById("alls").style.display = "none";
+                document.getElementById("alls2").style.display = "";
+
+                //animate line timeline for second story
+                insertStyleSheetRule("@keyframes theLineAnim2 { 0% { left:-100%; }  100% { left:0;}  }");
+                insertStyleSheetRule("#alls2 { " + "animation: theLineAnim2 "+(time2-0.5)+"s;" + "}");
+                whichAnim = true;
+
+
+                //cancel animation for story 1 and 3
+                insertStyleSheetRule("@keyframes spinItz3 { 0% { transform: rotate(0deg); }  100% { transform: rotate(0deg);}  }");
+
+                insertStyleSheetRule("#rightElement { " + 
+                "animation: spinItz3 .1s;" + 
+                "width: 50px; height: 50px; border: 4px solid black; " + 
+                "}");
+
+                insertStyleSheetRule("@keyframes spinIt3h { 0% { transform: rotate(0deg); }  100% { transform: rotate(0deg);}  }");
+
+                insertStyleSheetRule("#leftElement { " + 
+                "animation: spinIt3h .1s;" + 
+                "width: 50px; height: 50px; border: 4px solid black; " + 
+                "}");
+
+                //animation for story2  border
+                insertStyleSheetRule("@keyframes border2Anim { 0% { transform: rotate(40deg);background: none;}  100% { transform: rotate(-360deg);  background: red;}  }");
+                insertStyleSheetRule("#centeredElementBorder { " + "animation: border2Anim 2.4s;"  + "}", );
+
+                //animate the other borders to let next anim to be executed
+                insertStyleSheetRule("@keyframes border1Anim { 0% { transform: rotate(0deg);background: none;}  100% { transform: rotate(0deg);  background: none;}  }");
+                insertStyleSheetRule("#leftElementBorder { " + "animation: border1sAnim .1s;"  + "}", );
+
+
+                insertStyleSheetRule("@keyframes border3Anim { 0% { transform: rotate(0deg);background: none;}  100% { transform: rotate(0deg);  background: none;}  }");
+                insertStyleSheetRule("#rightElementBorder { " + "animation: border3sAnim .1s;"  + "}", );
+
+
+            }
+
+            //animate scale full story from 0 to 105% when you click the round button
+            if (inStory2 == false){
+
+            	$('#aStory').animate({transform: 1.05},
+                    {duration:340,easing:'linear',
+                    step: function(now, fx) {
+                        $(this).css('transform','scale('+now+')')}
+                })
+
+            }
+
+            inStory2 = true;
+
+            //start timer for the second story
+            myTimeout = setTimeout(function(){clickS3();document.getElementById("aStory").style.display="";}, time2*1000);
+
+    }
+
+
+    //function click on third story
+    function clickS3(){
+
+            //stop playing the video of story 1 if video was opened before
+            pho1.src = firstStoryPhoto;
+            document.getElementById("rightElement").style.border = "";
+
+            //cancel the other stories
+            inStory1 = false;
+            inStory2 = false;
+
+            //display the image and the text underneath
+            photo3place.style.display = "";
+            t3.style.display = "";
+
+            //hide the video from story 1 and image of story 2 and their texts
+            t1.style.display = "none";
+            t2.style.display = "none";
+            photo1place.style.display = "none";
+            photo2place.style.display = "none";
+
+            //display background of the story
+            document.getElementById("aStory").style.display="";
+
+            //display round element of story 3
+            document.getElementById("centeredElementBorder").style.background = "none";
+            document.getElementById("leftElementBorder").style.background = "none";
+            document.getElementById("rightElementBorder").style.background = "red";
+
+            //animation(rotating) for this border story
+            insertStyleSheetRule("@keyframes spinItC { 0% { transform: rotate(-40deg); }  100% { transform: rotate("+ xSpin +"deg);}  }");
+
+            insertStyleSheetRule("#rightElement { " + "animation: spinItC 1.4s;" + "width: 50px; height: 50px; border: 4px solid black; " + "}");
+
+
+            //animation for the bar line
+            if (whichAnim == true){
+
+            	document.getElementById("alls").style.display = "";
+            	document.getElementById("alls2").style.display = "none";
+
+                //animate line timeline for the story
+                insertStyleSheetRule("@keyframes theLineAnim { 0% { left:-100%; }  100% { left:0;}  }");
+                insertStyleSheetRule("#alls { " + "animation: theLineAnim "+(time3-0.5)+"s;" + "}");
+                whichAnim = false;
+
+                //cancel animation for story 1 and 2
+                insertStyleSheetRule("@keyframes spinItz3 { 0% { transform: rotate(0deg); }  100% { transform: rotate(0deg);}  }");
+                insertStyleSheetRule("#centeredElement { " + "animation: spinItz3 .1s;" + "width: 50px; height: 50px; border: 4px solid black; " + "}");
+                insertStyleSheetRule("@keyframes spinIt3h { 0% { transform: rotate(0deg); }  100% { transform: rotate(0deg);}  }");
+                insertStyleSheetRule("#leftElement { " + "animation: spinIt3h .1s;" + "width: 50px; height: 50px; border: 4px solid black; " + "}");
+
+                //animation for third story  border
+                insertStyleSheetRule("@keyframes border2Anim { 0% { transform: rotate(40deg);background: none;}  100% { transform: rotate(-360deg);  background: red;}  }");
+                insertStyleSheetRule("#rightElementBorder { " + "animation: border2Anim 2.4s;"  + "}", );
+
+                //animate the other borders to let next anim to be executed
+                insertStyleSheetRule("@keyframes border1Anim { 0% { transform: rotate(0deg);background: none;}  100% { transform: rotate(0deg);  background: none;}  }");
+                insertStyleSheetRule("#leftElementBorder { " + "animation: border1sAnim .1s;"  + "}", );
+
+
+                insertStyleSheetRule("@keyframes border3Anim { 0% { transform: rotate(0deg);background: none;}  100% { transform: rotate(0deg);  background: none;}  }");
+                insertStyleSheetRule("#centeredElementBorder { " + "animation: border3sAnim .1s;"  + "}", );
+
+            }
+
+            else{
+
+            	document.getElementById("alls").style.display = "none";
+            	document.getElementById("alls2").style.display = "";
+
+                //animate line timeline for second story
+                insertStyleSheetRule("@keyframes theLineAnim2 { 0% { left:-100%; }  100% { left:0;}  }");
+                insertStyleSheetRule("#alls2 { " + "animation: theLineAnim2 "+(time3-0.5)+"s;" + "}");
+                whichAnim = true;
+
+                //cancel animation for story 1 and 2
+                insertStyleSheetRule("@keyframes spinItz3 { 0% { transform: rotate(0deg); }  100% { transform: rotate(0deg);}  }");
+                insertStyleSheetRule("#centeredElement { " + "animation: spinItz3 .1s;" + "width: 50px; height: 50px; border: 4px solid black; " + "}");
+
+                insertStyleSheetRule("@keyframes spinIt3h { 0% { transform: rotate(0deg); }  100% { transform: rotate(0deg);}  }");
+                insertStyleSheetRule("#leftElement { " + "animation: spinIt3h .1s;" + "width: 50px; height: 50px; border: 4px solid black; " + "}");
+
+                //animation for third story  border
+                insertStyleSheetRule("@keyframes border2Anim { 0% { transform: rotate(40deg);background: none;}  100% { transform: rotate(-360deg);  background: red;}  }");
+                insertStyleSheetRule("#rightElementBorder { " + "animation: border2Anim 2.4s;"  + "}", );
+
+                //animate the other borders to let next anim to be executed
+                insertStyleSheetRule("@keyframes border1Anim { 0% { transform: rotate(0deg);background: none;}  100% { transform: rotate(0deg);  background: none;}  }");
+                insertStyleSheetRule("#leftElementBorder { " + "animation: border1sAnim .1s;"  + "}", );
+
+               insertStyleSheetRule("@keyframes border3Anim { 0% { transform: rotate(0deg);background: none;}  100% { transform: rotate(0deg);  background: none;}  }");
+                insertStyleSheetRule("#centeredElementBorder { " + "animation: border3sAnim .1s;"  + "}", );
+
+            }
+
+            //animate scale full story from 0 to 105% when you click the round button
+            if (inStory3 == false){
+
+                $('#aStory').animate({transform: 1.05},
+                    {duration:340,easing:'linear',
+                    step: function(now, fx) {
+                        $(this).css('transform','scale('+now+')')}
+                })
+
+            }
+
+            inStory3 = true;
+
+            //start timer for third story
+            myTimeout = setTimeout(function(){closeAll();}, time2*1000);
+
+    }
+
+
+    //cancel stories when x button is pressed
+    function closeAll(){
+
+    inStory1 = false;
+    inStory2 = false;
+    inStory3 = false;
+
+    //make timeline bar dissapear
+    document.getElementById("alls").style.display = "none";
+    document.getElementById("alls2").style.display = "none";
+
+    //hide borders
+    document.getElementById("rightElementBorder").style.background = "none";
+    document.getElementById("leftElementBorder").style.background = "none";
+    document.getElementById("centeredElementBorder").style.background = "none";
+
      
 
+    //cancel animation for story 1, 2  and 3
+    insertStyleSheetRule("@keyframes spinIt5k { 0% { transform: rotate(0deg); }  100% { transform: rotate(0deg);}  }");
+
+        insertStyleSheetRule("#leftElement { " + 
+            "animation: spinIt5k .1s;" + 
+            "width: 50px; height: 50px; border: 4px solid black; " + 
+        "}");
 
 
- }
+        insertStyleSheetRule("@keyframes spinIt5lz { 0% { transform: rotate(0deg); }  100% { transform: rotate(0deg);}  }");
+
+        insertStyleSheetRule("#centeredElement { " + 
+            "animation: spinIt5lz .1s;" + 
+            "width: 50px; height: 50px; border: 4px solid black; " + 
+        "}");
 
 
-document.getElementById("all").appendChild(elem);
+
+        insertStyleSheetRule("@keyframes spinItR { 0% { transform: rotate(0deg); }  100% { transform: rotate(0deg);}  }");
+
+        insertStyleSheetRule("#rightElement { " + 
+            "animation: spinItR .1s;" + 
+            "width: 50px; height: 50px; border: 4px solid black; " + 
+        "}");
+
+    //animation for first story border
+
+     
+        //animate the other borders to let next anim to be executed
+    insertStyleSheetRule("@keyframes border1Anim { 0% { transform: rotate(0deg);background: none;}  100% { transform: rotate(0deg);  background: none;}  }");
+
+        insertStyleSheetRule("#leftElementBorder { " + 
+            "animation: border1sAnim .1s;"  + 
+        "}", );
+
+
+        insertStyleSheetRule("@keyframes border2Anim { 0% { transform: rotate(0deg);background: none;}  100% { transform: rotate(0deg);  background: none;}  }");
+
+        insertStyleSheetRule("#centeredElementBorder { " + 
+            "animation: border2sAnim .1s;"  + 
+        "}", );
+
+
+         insertStyleSheetRule("@keyframes border3Anim { 0% { transform: rotate(0deg);background: none;}  100% { transform: rotate(0deg);  background: none;}  }");
+
+        insertStyleSheetRule("#rightElementBorder { " + 
+            "animation: border3sAnim .1s;"  + 
+        "}", );
+
+
+       document.getElementById("aStory").style.display="none";
 
 
 
 
-
-//imagen 2
-var elem2 = document.createElement("img");
-elem2.src = secondStoryPhoto;
-elem2.style.width = '50px';
-elem2.style.height = '50px';
-elem2.style.paddingTop = '5px';
-elem2.style.borderRadius = "50%";
+    }
 
 
-elem2.style.borderWidth = "2px";
-elem2.style.borderStyle ="solid";
-elem2.style.borderColor = "white"
+    //create and insert stylesheet to animate with keyframes 
+    function insertStyleSheetRule(ruleText)
+    {
+        let sheets = document.styleSheets;
+
+        if(sheets.length == 0)
+        {
+            let style = document.createElement('style');
+            style.appendChild(document.createTextNode(""));
+            document.head.appendChild(style);
+        }
+
+        let sheet = sheets[sheets.length - 1];
+        sheet.insertRule(ruleText, sheet.rules ? sheet.rules.length : sheet.cssRules.length);
+    }
 
 
-elem2.style.zIndex = "4";
 
-elem2.style.justifyContent = "center";
-elem2.id = "centeredElement";
-//elem2.style.position = "absolute";
-//elem2.style.left = "46%";
-elem2.onclick = function(e) {
+    /*Function - Create animation for the link of the stories
 
-	clearTimeout(myTimeout);
+    a - id of which border you want to be visible of the story
+    b, c - the nonvisible borders
+    d - animation name
+    e - how many degrees to rotate the story
+    f - id of the shortcut story
 
+    */
+    function animateLinkToStory(a, b, c, d, e, f){
 
+        document.getElementById("" + a + "").style.background = "red";
+        document.getElementById("" + b + "").style.background = "none";
+        document.getElementById("" + c + "").style.background = "none";
         
+        insertStyleSheetRule("@keyframes "+ d +" { 0% { transform: rotate(-40deg); }  100% { transform: rotate("+ e +"deg);}  }");
+        insertStyleSheetRule("#" + f + " { " + "animation: " + d + " 1.4s;" + "width: 50px; height: 50px; border: 4px solid black; " + "}");
 
-
-		clickS2();
-
-       
- 
-
-	
-
- }
-
-document.getElementById("all").appendChild(elem2);
-	
-
-
-//imagen 3
-var elem3 = document.createElement("img");
-elem3.src = thirdStoryPhoto;
-elem3.style.width = '50px';
-elem3.style.height = '50px';
-elem3.style.borderRadius = "50%";
-
-
-elem3.style.borderWidth = "2px";
-elem3.style.borderStyle ="solid";
-elem3.style.borderColor = "white"
-
-
-elem3.style.justifyContent = "center";
-elem3.style.marginRight = "40px";
-
-elem3.style.zIndex = "4";
-
-elem3.id = "rightElement";
-//elem3.style.position = "absolute"
-//elem3.style.left = "75%";
-elem3.style.paddingTop = '5px';
-elem3.onclick = function(e) { 
-
-
-clearTimeout(myTimeout);
-clickS3();
-
-
-
- };
-
-document.getElementById("all").appendChild(elem3);
-
-
-//create x button to close a story
-var theXbutton = document.createElement("a");
-theXbutton.id = "closeStory";
-theXbutton.style.color = "white";
-theXbutton.innerHTML = "X"; 
-theXbutton.style.position="absolute";
-theXbutton.style.right="0";
-theXbutton.style.padding="5px";
-theXbutton.onclick = function() {
-
-	document.getElementById("aStory").style.display="none";
-
-clearTimeout(myTimeout);
-pho1.src = firstStoryPhoto;
-	//cancel all animations for round stories
-	//cancel animation for story 1 and 2
-	closeAll();
-
-
-
-
-
- }
-
-document.getElementById("aStory").appendChild(theXbutton);
-
-
-
-
-
-
-
-//create image 1 place button to close a story 
-var photo1p = document.createElement("div");
-photo1p.id = "photo1place";
-photo1p.style.color = "white";
-photo1p.style.width = "400px";
-photo1p.style.height = "270px";
-photo1p.style.margin = "auto";
-
-document.getElementById("aStory").appendChild(photo1p);
-
-
-//assign image 1 to image place 1
-var pho1 = document.createElement("iframe");
-pho1.id = "pho1";
-pho1.style.color = "white";
-pho1.style.width = "400px";
-pho1.style.height = "270px";
-pho1.style.margin = "auto";
-pho1.style.position ="absolute";
-pho1.src = firststoryPhotoPlay;
-pho1.allow = "autoplay;fullscreen";
-
-
-document.getElementById("photo1place").appendChild(pho1);
-
-
-//create text for image 1 place button to close a story 
-var t1 = document.createElement("div");
-t1.id = "text1";
-t1.style.color = "white";
-t1.style.fontWeight = "bold";
-t1.style.margin = "auto";
-t1.innerHTML = firstText; 
-t1.style.padding = "6px";
-t1.style.maxWidth = "600px";
-
-
-document.getElementById("aStory").appendChild(t1);
-
-
-
-
-//create image 2 place button to close a story 
-var photo2p = document.createElement("div");
-photo2p.id = "photo2place";
-photo2p.style.color = "white";
-photo2p.style.width = "400px";
-photo2p.style.height = "270px";
-photo2p.style.margin = "auto";
-
-document.getElementById("aStory").appendChild(photo2p);
-
-
-//assign image 2 to image place  2
-var pho2 = document.createElement("img");
-pho2.id = "pho2";
-pho2.style.color = "white";
-pho2.style.width = "400px";
-pho2.style.height = "270px";
-pho2.style.margin = "auto";
-pho2.src = secondStoryPhoto;
-
-document.getElementById("photo2place").appendChild(pho2);
-
-
-
-//create text for image 2 place button to close a story 
-var t2 = document.createElement("div");
-t2.id = "text2";
-t2.style.color = "white";
-t2.style.fontWeight = "bold";
-t2.style.margin = "auto";
-t2.innerHTML = secondText; 
-t2.style.padding = "6px";
-t2.style.maxWidth = "600px";
-
-
-document.getElementById("aStory").appendChild(t2);
-
-
-
-
-
-
-
-
-
-
-//create image 3 place button to close a story 
-var photo3p = document.createElement("div");
-photo3p.id = "photo3place";
-photo3p.style.color = "white";
-photo3p.style.width = "400px";
-photo3p.style.height = "270px";
-photo3p.style.margin = "auto";
-
-document.getElementById("aStory").appendChild(photo3p);
-
-
-//assign image 3 to image place  3
-var pho3 = document.createElement("img");
-pho3.id = "pho3";
-pho3.style.color = "white";
-pho3.style.width = "400px";
-pho3.style.height = "270px";
-pho3.style.margin = "auto";
-pho3.src = thirdStoryPhoto;
-
-document.getElementById("photo3place").appendChild(pho3);
-
-
-//create text for image 3 place button to close a story 
-var t3 = document.createElement("div");
-t3.id = "text3";
-t3.style.color = "white";
-t3.style.fontWeight = "bold";
-t3.style.margin = "auto";
-t3.innerHTML = thirdText; 
-t3.style.padding = "6px";
-t3.style.maxWidth = "600px";
-
-
-document.getElementById("aStory").appendChild(t3);
-
-
-
-
-
-
-//function show a story
-function showStory(){
-document.getElementById('fastTypeArea').style.display = "";
-   document.getElementById('ex').style.display = "";
-  document.getElementById('fastTypeArea').style.display = "";
-  document.getElementById('closeStory').style.display = "";
-  randomTextToFastWriting();
-
-  theTrueText=fastText[randomTxt];
-
-
-}
-
-
-
-
-
-//create the second story bar 
-var pf = document.createElement("div");
-
-pf.position = "absolute";
-
-pf.id = "theAll";
-pf.style.width = "100%";
-pf.style.height = "90px";
-pf.style.marginTop = "-110px";
-pf.style.paddingTop = "10px";
-pf.style.paddingBottom = "10px";
-pf.style.zIndex = "-100";
-pf.style.justifyContent = "space-between";
-
-document.getElementById("myDiv").appendChild(pf);
-
-
-
-
-//create the story bar
-var barBorder = document.createElement("div");
-barBorder.id = "allMF";
-barBorder.style.width = "100%";
-barBorder.style.height = "90px";
-barBorder.style.background = "black";
-barBorder.style.paddingBottom = "10px";
-barBorder.style.display = "flex";
-barBorder.style.justifyContent = "space-between";
-barBorder.style.zIndex = "-1";
-
-document.getElementById("theAll").appendChild(barBorder);
-
-
-
-
-
-
-
-//first story border
-//imagen 1
-var elemBorder1 = document.createElement("div");
-//elem.style.position = "absolute";
-elemBorder1.style.width = '57px';
-elemBorder1.style.height = '55px';
-
-elemBorder1.style.borderRadius = "50%";
-elemBorder1.style.paddingTop = '5px';
-elemBorder1.style.marginTop = '20px';
-
-
-elemBorder1.style.justifyContent = "center";
-elemBorder1.id = "leftElementBorder";
-
-
-//elem.style.marginLeft ="13%";
-
-
-elemBorder1.style.zIndex = "0";
-elemBorder1.style.marginLeft = "37px";
-
-document.getElementById("allMF").appendChild(elemBorder1);
-
-
-
-
-
-
-//imagen 2
-var elem2Border = document.createElement("div");
-elem2Border.style.width = '57px';
-elem2Border.style.height = '55px';
-
-elem2Border.style.borderRadius = "50%";
-elem2Border.style.paddingTop = '5px';
-
-
-elem2Border.style.justifyContent = "center";
-elem2Border.id = "centeredElementBorder";
-elem2Border.style.marginTop = '20px';
-
-document.getElementById("allMF").appendChild(elem2Border);
-
-
-
-//imagen 3
-var elem3Border = document.createElement("div");
-elem3Border.style.width = '57px';
-elem3Border.style.height = '55px';
-
-elem3Border.style.borderRadius = "50%";
-elem3Border.style.paddingTop = '5px';
-
-elem3Border.style.justifyContent = "center";
-elem3Border.id = "rightElementBorder";
-
-elem3Border.style.marginTop = '20px';
-elem3Border.style.marginRight = "37px";
-
-
-//elem3.style.position = "absolute";
-//elem3.style.left = "75%";
-
-document.getElementById("allMF").appendChild(elem3Border);
-
-
-
-
-
-//function click first story
-function clickS1(){
-document.getElementById("leftElement").style.border = "";
-pho1.src = firststoryPhotoPlay;
-if (whichAnim == true){
-	document.getElementById("alls").style.display="";
-	document.getElementById("alls2").style.display="none";
-}
-
-else{
-	document.getElementById("alls2").style.display="";
-	document.getElementById("alls").style.display="none";
-}
-
-
-
-inStory2 = false;
-	inStory3 = false;
-
-
-
-	photo1place.style.display = "";
-	t1.style.display = "";
-
-	t2.style.display = "none";
-	t3.style.display = "none";
-	photo2place.style.display = "none";
-	photo3place.style.display = "none";
-	document.getElementById("aStory").style.display="";
-
-	
-
-
-	
-//animation of this story
-document.getElementById("leftElementBorder").style.background = "red";
-document.getElementById("centeredElementBorder").style.background = "none";
-document.getElementById("rightElementBorder").style.background = "none";
-
-   insertStyleSheetRule("@keyframes spinItC { 0% { transform: rotate(-40deg); }  100% { transform: rotate("+ xSpin +"deg);}  }");
-
-    insertStyleSheetRule("#leftElement { " + 
-        "animation: spinItC 1.4s;" + 
-        "width: 50px; height: 50px; border: 4px solid black; " + 
-    "}");
-
-
-
-//animation for the bar line
-
-if (whichAnim == true){
-	document.getElementById("alls")
-
-	 insertStyleSheetRule("@keyframes theLineAnim { 0% { left:-100%; }  100% { left:0;}  }");
-
-    insertStyleSheetRule("#alls { " + 
-        "animation: theLineAnim " + (time1-0.5)+"s;" +
-    "}");
-
-    whichAnim = false;
-
-
-    //camcel animation for story 2 and 3
-    insertStyleSheetRule("@keyframes spinIt6 { 0% { transform: rotate(0deg); }  100% { transform: rotate(0deg);}  }");
-
-    insertStyleSheetRule("#centeredElement { " + 
-        "animation: spinIt6 .1s;" + 
-        "width: 50px; height: 50px; border: 4px solid black; " + 
-    "}");
-
-     insertStyleSheetRule("@keyframes spinIt7 { 0% { transform: rotate(0deg); }  100% { transform: rotate(0deg);}  }");
-
-    insertStyleSheetRule("#rightElement { " + 
-        "animation: spinIt7 .1s;" + 
-        "width: 50px; height: 50px; border: 4px solid black; " + 
-    "}");
-
-
-
-
-    //animation for first story border
-
- insertStyleSheetRule("@keyframes border1Anim { 0% { transform: rotate(40deg);background: none;}  100% { transform: rotate(-360deg);  background: red;}  }");
-
-    insertStyleSheetRule("#leftElementBorder { " + 
-        "animation: border1Anim 2.4s;"  + 
-    "}", );
-
-    //animate the other borders to let next anim to be executed
-
-
-insertStyleSheetRule("@keyframes border2Anim { 0% { transform: rotate(0deg);background: none;}  100% { transform: rotate(0deg);  background: none;}  }");
-
-    insertStyleSheetRule("#centeredElementBorder { " + 
-        "animation: border2sAnim .1s;"  + 
-    "}", );
-
-
-   insertStyleSheetRule("@keyframes border3Anim { 0% { transform: rotate(0deg);background: none;}  100% { transform: rotate(0deg);  background: none;}  }");
-
-    insertStyleSheetRule("#rightElementBorder { " + 
-        "animation: border3sAnim .1s;"  + 
-    "}", );
-
-
-
-}
-	else{
-
-		document.getElementById("alls2")
-
-	 insertStyleSheetRule("@keyframes theLineAnim2 { 0% { left:-100%; }  100% { left:0;}  }");
-
-    insertStyleSheetRule("#alls2 { " + 
-        "animation: theLineAnim2 "+(time1-0.5)+"s;" +
-    "}");
-
-    whichAnim = true;
-
-
-
-    //camcel animation for story 2 and 3
-    insertStyleSheetRule("@keyframes spinIt6 { 0% { transform: rotate(0deg); }  100% { transform: rotate(0deg);}  }");
-
-    insertStyleSheetRule("#centeredElement { " + 
-        "animation: spinIt6 .1s;" + 
-        "width: 50px; height: 50px; border: 4px solid black; " + 
-    "}");
-
-     insertStyleSheetRule("@keyframes spinIt7 { 0% { transform: rotate(0deg); }  100% { transform: rotate(0deg);}  }");
-
-    insertStyleSheetRule("#rightElement { " + 
-        "animation: spinIt7 .1s;" + 
-        "width: 50px; height: 50px; border: 4px solid black; " + 
-    "}");
-
-
-
-
-    //animation for first story border
-
- insertStyleSheetRule("@keyframes border1Anim { 0% { transform: rotate(40deg);background: none;}  100% { transform: rotate(-360deg);  background: red;}  }");
-
-    insertStyleSheetRule("#leftElementBorder { " + 
-        "animation: border1Anim 2.4s;"  + 
-    "}", );
-
-    //animate the other borders to let next anim to be executed
-
-
-insertStyleSheetRule("@keyframes border2Anim { 0% { transform: rotate(0deg);background: none;}  100% { transform: rotate(0deg);  background: none;}  }");
-
-    insertStyleSheetRule("#centeredElementBorder { " + 
-        "animation: border2sAnim .1s;"  + 
-    "}", );
-
-
-   insertStyleSheetRule("@keyframes border3Anim { 0% { transform: rotate(0deg);background: none;}  100% { transform: rotate(0deg);  background: none;}  }");
-
-    insertStyleSheetRule("#rightElementBorder { " + 
-        "animation: border3sAnim .1s;"  + 
-    "}", );
-
-
-
-
-	}
-
-
-
-
-
-
-	
-
-
-
-
-
-
-
-
-  
-    
-
-if (inStory1 == false){
-
- $('#aStory').animate({transform: 1.05},
-{duration:340,easing:'linear',
-step: function(now, fx) {
-$('#aStory').css('transform','scale('+now+')')}
-})
-}
-
-//-----------------------
-
-function insertStyleSheetRule(ruleText)
-{
-    let sheets = document.styleSheets;
-
-    if(sheets.length == 0)
-    {
-        let style = document.createElement('style');
-        style.appendChild(document.createTextNode(""));
-        document.head.appendChild(style);
     }
 
-    let sheet = sheets[sheets.length - 1];
-    sheet.insertRule(ruleText, sheet.rules ? sheet.rules.length : sheet.cssRules.length);
-}
 
-inStory1 = true;
+ //cancel animation for story 2 and 3 (the rotation of the links)
+    /*
 
-//-------------
+        a - animation name
+        b - 0 deg (no rotation animation)
+        c - id of the element
 
+    */
+    function cancelLinksToStory(a, b, c){
 
+        insertStyleSheetRule("@keyframes " + a + " { 0% { transform: rotate(" + b + "deg); }  100% { transform: rotate(" + b +"deg);}  }");
 
-myTimeout = setTimeout(function(){clickS2();document.getElementById("aStory").style.display="";}, time1*1000);
+        insertStyleSheetRule("#" + c + " { " + "animation: " + a + " .1s;" + "width: 50px; height: 50px; border: 4px solid black; " + "}");
 
-
-
-
-}
-
-
-
-
-
-
-
-//function click second story
-function clickS2(){
-
-pho1.src = firstStoryPhoto;
-document.getElementById("centeredElement").style.border = "";
-
-inStory1 = false;
-inStory3 = false;
-
-
-//-----------------------
-
-function insertStyleSheetRule(ruleText)
-{
-    let sheets = document.styleSheets;
-
-    if(sheets.length == 0)
-    {
-        let style = document.createElement('style');
-        style.appendChild(document.createTextNode(""));
-        document.head.appendChild(style);
     }
 
-    let sheet = sheets[sheets.length - 1];
-    sheet.insertRule(ruleText, sheet.rules ? sheet.rules.length : sheet.cssRules.length);
-}
 
 
-
-//-------------
-
-//animation for this story
-document.getElementById("centeredElementBorder").style.background = "red";
-document.getElementById("leftElementBorder").style.background = "none";
-document.getElementById("rightElementBorder").style.background = "none";
-
- insertStyleSheetRule("@keyframes spinItC { 0% { transform: rotate(-40deg); }  100% { transform: rotate("+ xSpin +"deg);}  }");
-
-    insertStyleSheetRule("#centeredElement { " + 
-        "animation: spinItC 1.4s;" + 
-        "width: 50px; height: 50px; border: 4px solid black; " + 
-    "}");
-
-
-//animation for the bar line
-
-if (whichAnim == true){
-	document.getElementById("alls").style.display = "";
-	document.getElementById("alls2").style.display = "none";
-	document.getElementById("alls")
-
-	 insertStyleSheetRule("@keyframes theLineAnim { 0% { left:-100%; }  100% { left:0;}  }");
-
-    insertStyleSheetRule("#alls { " + 
-        "animation: theLineAnim "+(time2-0.5)+"s;" +
-    "}");
-
-    whichAnim = false;
-//cancel animation for story 1 and 3
-insertStyleSheetRule("@keyframes spinItz3 { 0% { transform: rotate(0deg); }  100% { transform: rotate(0deg);}  }");
-
-    insertStyleSheetRule("#rightElement { " + 
-        "animation: spinItz3 .1s;" + 
-        "width: 50px; height: 50px; border: 4px solid black; " + 
-    "}");
-
-    insertStyleSheetRule("@keyframes spinIt3h { 0% { transform: rotate(0deg); }  100% { transform: rotate(0deg);}  }");
-
-    insertStyleSheetRule("#leftElement { " + 
-        "animation: spinIt3h .1s;" + 
-        "width: 50px; height: 50px; border: 4px solid black; " + 
-    "}");
-
-//animation for first story2  border
-
-insertStyleSheetRule("@keyframes border2Anim { 0% { transform: rotate(40deg);background: none;}  100% { transform: rotate(-360deg);  background: red;}  }");
-
-    insertStyleSheetRule("#centeredElementBorder { " + 
-        "animation: border2Anim 2.4s;"  + 
-    "}", );
-//animate the other borders to let next anim to be executed
-insertStyleSheetRule("@keyframes border1Anim { 0% { transform: rotate(0deg);background: none;}  100% { transform: rotate(0deg);  background: none;}  }");
-
-    insertStyleSheetRule("#leftElementBorder { " + 
-        "animation: border1sAnim .1s;"  + 
-    "}", );
-
-
-   insertStyleSheetRule("@keyframes border3Anim { 0% { transform: rotate(0deg);background: none;}  100% { transform: rotate(0deg);  background: none;}  }");
-
-    insertStyleSheetRule("#rightElementBorder { " + 
-        "animation: border3sAnim .1s;"  + 
-    "}", );
-
-
-
-}
-
-else{
-
-	document.getElementById("alls").style.display = "none";
-	document.getElementById("alls2").style.display = "";
-
-document.getElementById("alls2")
-
-	 insertStyleSheetRule("@keyframes theLineAnim2 { 0% { left:-100%; }  100% { left:0;}  }");
-
-    insertStyleSheetRule("#alls2 { " + 
-        "animation: theLineAnim2 "+(time2-0.5)+"s;" +
-    "}");
-
-    whichAnim = true;
-
-
-//cancel animation for story 1 and 3
-insertStyleSheetRule("@keyframes spinItz3 { 0% { transform: rotate(0deg); }  100% { transform: rotate(0deg);}  }");
-
-    insertStyleSheetRule("#rightElement { " + 
-        "animation: spinItz3 .1s;" + 
-        "width: 50px; height: 50px; border: 4px solid black; " + 
-    "}");
-
-    insertStyleSheetRule("@keyframes spinIt3h { 0% { transform: rotate(0deg); }  100% { transform: rotate(0deg);}  }");
-
-    insertStyleSheetRule("#leftElement { " + 
-        "animation: spinIt3h .1s;" + 
-        "width: 50px; height: 50px; border: 4px solid black; " + 
-    "}");
-
-//animation for first story2  border
-
-insertStyleSheetRule("@keyframes border2Anim { 0% { transform: rotate(40deg);background: none;}  100% { transform: rotate(-360deg);  background: red;}  }");
-
-    insertStyleSheetRule("#centeredElementBorder { " + 
-        "animation: border2Anim 2.4s;"  + 
-    "}", );
-//animate the other borders to let next anim to be executed
-insertStyleSheetRule("@keyframes border1Anim { 0% { transform: rotate(0deg);background: none;}  100% { transform: rotate(0deg);  background: none;}  }");
-
-    insertStyleSheetRule("#leftElementBorder { " + 
-        "animation: border1sAnim .1s;"  + 
-    "}", );
-
-
-   insertStyleSheetRule("@keyframes border3Anim { 0% { transform: rotate(0deg);background: none;}  100% { transform: rotate(0deg);  background: none;}  }");
-
-    insertStyleSheetRule("#rightElementBorder { " + 
-        "animation: border3sAnim .1s;"  + 
-    "}", );
-
-
-}
-
-
-
-
-
-	photo2place.style.display = "";
-	t2.style.display = "";
-
-	t1.style.display = "none";
-	t3.style.display = "none";
-	photo1place.style.display = "none";
-	photo3place.style.display = "none";
-	document.getElementById("aStory").style.display="";
-
-
-if (inStory2 == false){
-	$('#aStory').animate({transform: 1.05},
-{duration:340,easing:'linear',
-step: function(now, fx) {
-$(this).css('transform','scale('+now+')')}
-})
-}
-inStory2 = true;
-
-
-
-
-myTimeout = setTimeout(function(){clickS3();document.getElementById("aStory").style.display="";}, time2*1000);
-
-
-}
-
-
-function clickS3(){
-
-
-pho1.src = firstStoryPhoto;
-document.getElementById("rightElement").style.border = "";
-
-
-inStory1 = false;
-inStory2 = false;
-
-
-//-----------------------
-
-function insertStyleSheetRule(ruleText)
-{
-    let sheets = document.styleSheets;
-
-    if(sheets.length == 0)
-    {
-        let style = document.createElement('style');
-        style.appendChild(document.createTextNode(""));
-        document.head.appendChild(style);
+    /*
+    Function to animate the timline red line
+    a - name of the animation
+    b - from left (px or %)
+    c - to left (px or %)
+    d - id of the element
+    */
+    function animAline (a, b, c, d){
+        insertStyleSheetRule("@keyframes " + a + " { 0% { left:" + b + "; } 100% { left:" + c + ";}  }");
+        insertStyleSheetRule("#" + d + " { " + "animation: " + a + " " + (time1-0.5)+"s;" +"}");
     }
-
-    let sheet = sheets[sheets.length - 1];
-    sheet.insertRule(ruleText, sheet.rules ? sheet.rules.length : sheet.cssRules.length);
-}
-
-
-
-//-------------
-
-//animation for this story
-document.getElementById("centeredElementBorder").style.background = "none";
-document.getElementById("leftElementBorder").style.background = "none";
-document.getElementById("rightElementBorder").style.background = "red";
-
- insertStyleSheetRule("@keyframes spinItC { 0% { transform: rotate(-40deg); }  100% { transform: rotate("+ xSpin +"deg);}  }");
-
-    insertStyleSheetRule("#rightElement { " + 
-        "animation: spinItC 1.4s;" + 
-        "width: 50px; height: 50px; border: 4px solid black; " + 
-    "}");
-
-
-
-
-
-//animation for the bar line
-
-if (whichAnim == true){
-	document.getElementById("alls").style.display = "";
-	document.getElementById("alls2").style.display = "none";
-	document.getElementById("alls")
-
-	 insertStyleSheetRule("@keyframes theLineAnim { 0% { left:-100%; }  100% { left:0;}  }");
-
-    insertStyleSheetRule("#alls { " + 
-        "animation: theLineAnim "+(time3-0.5)+"s;" +
-    "}");
-
-    whichAnim = false;
-//cancel animation for story 1 and 3
-insertStyleSheetRule("@keyframes spinItz3 { 0% { transform: rotate(0deg); }  100% { transform: rotate(0deg);}  }");
-
-    insertStyleSheetRule("#centeredElement { " + 
-        "animation: spinItz3 .1s;" + 
-        "width: 50px; height: 50px; border: 4px solid black; " + 
-    "}");
-
-    insertStyleSheetRule("@keyframes spinIt3h { 0% { transform: rotate(0deg); }  100% { transform: rotate(0deg);}  }");
-
-    insertStyleSheetRule("#leftElement { " + 
-        "animation: spinIt3h .1s;" + 
-        "width: 50px; height: 50px; border: 4px solid black; " + 
-    "}");
-
-//animation for first story2  border
-
-insertStyleSheetRule("@keyframes border2Anim { 0% { transform: rotate(40deg);background: none;}  100% { transform: rotate(-360deg);  background: red;}  }");
-
-    insertStyleSheetRule("#rightElementBorder { " + 
-        "animation: border2Anim 2.4s;"  + 
-    "}", );
-//animate the other borders to let next anim to be executed
-insertStyleSheetRule("@keyframes border1Anim { 0% { transform: rotate(0deg);background: none;}  100% { transform: rotate(0deg);  background: none;}  }");
-
-    insertStyleSheetRule("#leftElementBorder { " + 
-        "animation: border1sAnim .1s;"  + 
-    "}", );
-
-
-   insertStyleSheetRule("@keyframes border3Anim { 0% { transform: rotate(0deg);background: none;}  100% { transform: rotate(0deg);  background: none;}  }");
-
-    insertStyleSheetRule("#centeredElementBorder { " + 
-        "animation: border3sAnim .1s;"  + 
-    "}", );
-}
-
-
-
-else{
-
-
-	document.getElementById("alls").style.display = "none";
-	document.getElementById("alls2").style.display = "";
-
-document.getElementById("alls2")
-
-	 insertStyleSheetRule("@keyframes theLineAnim2 { 0% { left:-100%; }  100% { left:0;}  }");
-
-    insertStyleSheetRule("#alls2 { " + 
-        "animation: theLineAnim2 "+(time3-0.5)+"s;" +
-    "}");
-
-    whichAnim = true;
-
-//cancel animation for story 1 and 3
-insertStyleSheetRule("@keyframes spinItz3 { 0% { transform: rotate(0deg); }  100% { transform: rotate(0deg);}  }");
-
-    insertStyleSheetRule("#centeredElement { " + 
-        "animation: spinItz3 .1s;" + 
-        "width: 50px; height: 50px; border: 4px solid black; " + 
-    "}");
-
-    insertStyleSheetRule("@keyframes spinIt3h { 0% { transform: rotate(0deg); }  100% { transform: rotate(0deg);}  }");
-
-    insertStyleSheetRule("#leftElement { " + 
-        "animation: spinIt3h .1s;" + 
-        "width: 50px; height: 50px; border: 4px solid black; " + 
-    "}");
-
-//animation for first story2  border
-
-insertStyleSheetRule("@keyframes border2Anim { 0% { transform: rotate(40deg);background: none;}  100% { transform: rotate(-360deg);  background: red;}  }");
-
-    insertStyleSheetRule("#rightElementBorder { " + 
-        "animation: border2Anim 2.4s;"  + 
-    "}", );
-//animate the other borders to let next anim to be executed
-insertStyleSheetRule("@keyframes border1Anim { 0% { transform: rotate(0deg);background: none;}  100% { transform: rotate(0deg);  background: none;}  }");
-
-    insertStyleSheetRule("#leftElementBorder { " + 
-        "animation: border1sAnim .1s;"  + 
-    "}", );
-
-
-   insertStyleSheetRule("@keyframes border3Anim { 0% { transform: rotate(0deg);background: none;}  100% { transform: rotate(0deg);  background: none;}  }");
-
-    insertStyleSheetRule("#centeredElementBorder { " + 
-        "animation: border3sAnim .1s;"  + 
-    "}", );
-
-}
-
-
-	photo3place.style.display = "";
-	t3.style.display = "";
-
-	t1.style.display = "none";
-	t2.style.display = "none";
-	photo1place.style.display = "none";
-	photo2place.style.display = "none";
-	document.getElementById("aStory").style.display="";
-
-
-if (inStory3 == false){
-	$('#aStory').animate({transform: 1.05},
-{duration:340,easing:'linear',
-step: function(now, fx) {
-$(this).css('transform','scale('+now+')')}
-})
-}
-inStory3 = true;
-
-myTimeout = setTimeout(function(){closeAll();}, time2*1000);
-
-}
-
-
-
-//cancel stories when x button is pressed
-function closeAll(){
-
-inStory1 = false;
-inStory2 = false;
-inStory3 = false;
-
-//make timeline bar dissapear
-document.getElementById("alls").style.display = "none";
-	document.getElementById("alls2").style.display = "none";
-
-
-//-----------------------
-
-function insertStyleSheetRule(ruleText)
-{
-    let sheets = document.styleSheets;
-
-    if(sheets.length == 0)
-    {
-        let style = document.createElement('style');
-        style.appendChild(document.createTextNode(""));
-        document.head.appendChild(style);
-    }
-
-    let sheet = sheets[sheets.length - 1];
-    sheet.insertRule(ruleText, sheet.rules ? sheet.rules.length : sheet.cssRules.length);
-}
-
-
-
-//-------------
-
-//animate this story
-document.getElementById("rightElementBorder").style.background = "none";
-document.getElementById("leftElementBorder").style.background = "none";
-document.getElementById("centeredElementBorder").style.background = "none";
-
- 
-
-//cancel animation for story 1, 2  and 3
-insertStyleSheetRule("@keyframes spinIt5k { 0% { transform: rotate(0deg); }  100% { transform: rotate(0deg);}  }");
-
-    insertStyleSheetRule("#leftElement { " + 
-        "animation: spinIt5k .1s;" + 
-        "width: 50px; height: 50px; border: 4px solid black; " + 
-    "}");
-
-
-    insertStyleSheetRule("@keyframes spinIt5lz { 0% { transform: rotate(0deg); }  100% { transform: rotate(0deg);}  }");
-
-    insertStyleSheetRule("#centeredElement { " + 
-        "animation: spinIt5lz .1s;" + 
-        "width: 50px; height: 50px; border: 4px solid black; " + 
-    "}");
-
-
-
-    insertStyleSheetRule("@keyframes spinItR { 0% { transform: rotate(0deg); }  100% { transform: rotate(0deg);}  }");
-
-    insertStyleSheetRule("#rightElement { " + 
-        "animation: spinItR .1s;" + 
-        "width: 50px; height: 50px; border: 4px solid black; " + 
-    "}");
-
-//animation for first story border
-
- 
-    //animate the other borders to let next anim to be executed
-insertStyleSheetRule("@keyframes border1Anim { 0% { transform: rotate(0deg);background: none;}  100% { transform: rotate(0deg);  background: none;}  }");
-
-    insertStyleSheetRule("#leftElementBorder { " + 
-        "animation: border1sAnim .1s;"  + 
-    "}", );
-
-
-    insertStyleSheetRule("@keyframes border2Anim { 0% { transform: rotate(0deg);background: none;}  100% { transform: rotate(0deg);  background: none;}  }");
-
-    insertStyleSheetRule("#centeredElementBorder { " + 
-        "animation: border2sAnim .1s;"  + 
-    "}", );
-
-
-     insertStyleSheetRule("@keyframes border3Anim { 0% { transform: rotate(0deg);background: none;}  100% { transform: rotate(0deg);  background: none;}  }");
-
-    insertStyleSheetRule("#rightElementBorder { " + 
-        "animation: border3sAnim .1s;"  + 
-    "}", );
-
-
-   document.getElementById("aStory").style.display="none";
-
-
-
-}
-
 
 
 </script>
