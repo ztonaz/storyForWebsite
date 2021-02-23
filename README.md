@@ -1,4 +1,7 @@
 # storyForWebsite
+
+ztonaz.com
+
 Story like gadget generated only with Javascript
 
 It's not an efficient way of making a story for a website, but I did it as an exercise.
